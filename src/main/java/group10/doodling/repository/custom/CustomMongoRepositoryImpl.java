@@ -1,4 +1,4 @@
-package group10.doodling.repository;
+package group10.doodling.repository.custom;
 
 import group10.doodling.entity.UuidIdentifiedEntity;
 import org.springframework.data.mongodb.core.MongoOperations;
