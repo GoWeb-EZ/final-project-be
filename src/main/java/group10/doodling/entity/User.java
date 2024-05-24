@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter @Setter
 public class User extends UuidIdentifiedEntity {
-    private String oauthId;
+    private Long oauthId;
     private String name;
     @DBRef
     private List<Note> notes = new ArrayList<>();

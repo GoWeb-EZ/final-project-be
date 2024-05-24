@@ -9,3 +9,9 @@ springdoc:
 
 jwt:
   secret-string: ${JWT_SECRET_STRING}
+
+oauth:
+  kakao-client-key: ${KAKAO_CLIENT_KEY}
+  kakao-client-secret: ${KAKAO_CLIENT_SECRET}
+
+host-address: ${HOST_ADDRESS}

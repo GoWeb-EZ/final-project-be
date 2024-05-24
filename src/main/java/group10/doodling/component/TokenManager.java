@@ -31,7 +31,7 @@ public class TokenManager implements InitializingBean {
     }
 
 
-    public String generateToken(String username, String userId) {
+    public String generateToken(String userId, String username) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + EXPIRATION_TIME);
 
