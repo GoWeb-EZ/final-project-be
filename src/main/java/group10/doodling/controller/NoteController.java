@@ -6,15 +6,17 @@ import group10.doodling.controller.dto.response.note.deleteNote.DeleteNoteRespon
 import group10.doodling.controller.dto.response.note.readNote.detail.ReadDetailNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.readNote.preview.ReadPreviewNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.updateNote.UpdateNoteResponseDTO;
+import group10.doodling.util.annotation.UserId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/note")
 public class NoteController {
 
     @PostMapping
-    public ResponseEntity<CreateNoteResponseDTO> createNote(@RequestBody CreateNoteRequestDTO createNoteRequestDTO) {
+    public ResponseEntity<CreateNoteResponseDTO> createNote(@UserId String userId, @RequestBody CreateNoteRequestDTO createNoteRequestDTO) {
         CreateNoteResponseDTO createNoteResponseDTO = new CreateNoteResponseDTO();
 
         /*
@@ -28,7 +30,7 @@ public class NoteController {
     }
 
     @GetMapping("/preview")
-    public ResponseEntity<ReadPreviewNoteResponseDTO> readPreviewNote(@RequestParam String noteId) {
+    public ResponseEntity<ReadPreviewNoteResponseDTO> readPreviewNote(@UserId String userId, @RequestParam String noteId) {
         ReadPreviewNoteResponseDTO readPreviewNoteResponseDTO = new ReadPreviewNoteResponseDTO();
 
         /*
@@ -42,7 +44,7 @@ public class NoteController {
     }
 
     @GetMapping("/detail")
-    public ResponseEntity<ReadDetailNoteResponseDTO> readDetailNote(@RequestParam String noteId) {
+    public ResponseEntity<ReadDetailNoteResponseDTO> readDetailNote(@UserId String userId, @RequestParam String noteId) {
         ReadDetailNoteResponseDTO readDetailNoteResponseDTO = new ReadDetailNoteResponseDTO();
 
         /*
@@ -57,7 +59,7 @@ public class NoteController {
     }
 
     @PatchMapping
-    public ResponseEntity<UpdateNoteResponseDTO> updateNote(@RequestParam String noteId) {
+    public ResponseEntity<UpdateNoteResponseDTO> updateNote(@UserId String userId, @RequestParam String noteId) {
         UpdateNoteResponseDTO updateNoteResponseDTO = new UpdateNoteResponseDTO();
 
         /*
@@ -71,7 +73,7 @@ public class NoteController {
     }
 
     @DeleteMapping
-    public ResponseEntity<DeleteNoteResponseDTO> deleteNote(@RequestParam String noteId) {
+    public ResponseEntity<DeleteNoteResponseDTO> deleteNote(@UserId String userId, @RequestParam String noteId) {
         DeleteNoteResponseDTO deleteNoteResponseDTO = new DeleteNoteResponseDTO();
 
         /*
