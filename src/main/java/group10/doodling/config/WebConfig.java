@@ -2,6 +2,8 @@ package group10.doodling.config;
 
 import group10.doodling.component.TokenManager;
 import group10.doodling.filter.AuthenticationFilter;
+import group10.doodling.util.argumentResolver.UserIdArgumentResolver;
+import group10.doodling.util.argumentResolver.UsernameArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +26,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드 설정
                 .allowedHeaders("*") // 허용할 헤더 설정, 별표(*)는 모든 헤더를 허용
                 .allowCredentials(true); // 모든 오리진을 허용하면 동작 오류, 특정 오리진을 설정해주어야 함.
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new UserIdArgumentResolver(tokenManager));
+        resolvers.add(new UsernameArgumentResolver(tokenManager));
     }
 
     @Bean
