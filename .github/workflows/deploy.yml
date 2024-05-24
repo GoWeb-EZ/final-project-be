@@ -17,6 +17,10 @@ jobs:
 
     env:
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      JWT_SECRET_STRING: ${{ secrets.JWT_SECRET_STRING }}
+      KAKAO_CLIENT_KEY: ${{ secrets.KAKAO_CLIENT_KEY }}
+      KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+      HOST_ADDRESS: ${{ secrets.EC2_HOST }}
 
     steps:
       - uses: actions/checkout@v3
