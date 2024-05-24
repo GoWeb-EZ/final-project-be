@@ -2,3 +2,7 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
