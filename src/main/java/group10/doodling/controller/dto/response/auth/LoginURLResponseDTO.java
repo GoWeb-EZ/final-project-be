@@ -1,4 +1,4 @@
-package group10.doodling.controller.response.auth;
+package group10.doodling.controller.dto.response.auth;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package group10.doodling.controller.response.note.updateNote;
+package group10.doodling.controller.dto.response.note.updateNote;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package group10.doodling.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import group10.doodling.controller.response.auth.LoginURLResponseDTO;
+import group10.doodling.controller.dto.response.auth.LoginURLResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
