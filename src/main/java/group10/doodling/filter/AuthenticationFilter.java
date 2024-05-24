@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import group10.doodling.component.TokenManager;
 import group10.doodling.controller.dto.common.ErrorResult;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.*;
@@ -13,75 +14,71 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 @Component
-@Order()
+@Order(1)
 @RequiredArgsConstructor
-public class AuthenticationFilter implements Filter {
+public class AuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String[] whiteList = {"/api/auth/login-url", "/api/auth/login/oauth2/callback"};
+    private static final String[] whiteList = {
+            "/",
+            "/api-docs",
+            "/api/auth/login-url",
+            "/api/auth/login/oauth2/callback"
+    };
     private final TokenManager tokenManager;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
+        String token = getToken(request);
+        boolean isWhiteList = Arrays.asList(whiteList).contains(requestURI) || requestURI.startsWith("/swagger-ui") || requestURI.startsWith("/v3");
 
-        String requestURI = httpRequest.getRequestURI();
-        String token = getToken(httpRequest);
-        boolean isWhiteList = Arrays.asList(whiteList).contains(requestURI);
-
-        try {
-
-            if (isWhiteList) {
-                filterChain.doFilter(request, response);
-            }
-
-            if (isValidToken(token)) {
-                filterChain.doFilter(request, response);
-            }
-
-        } catch (Exception e) {
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            httpResponse.setContentType("application/json");
-            httpResponse.setCharacterEncoding("utf-8");
-            if (e instanceof ExpiredJwtException) {
-                httpResponse.getWriter().write(objectMapper.writeValueAsString(new ErrorResult(
-                        HttpStatus.UNAUTHORIZED,
-                        "만료된 토큰입니다."
-                )));
-            }
-            else if (e instanceof MalformedJwtException || e instanceof UnsupportedJwtException) {
-                httpResponse.getWriter().write(objectMapper.writeValueAsString(new ErrorResult(
-                        HttpStatus.UNAUTHORIZED,
-                        "잘못된 토큰입니다."
-                )));
-            }
-            else {
-                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                httpResponse.getWriter().write(objectMapper.writeValueAsString(new ErrorResult(
-                        HttpStatus.INTERNAL_SERVER_ERROR,
-                        "Internal Server Error"
-                )));
-            }
+        if (isWhiteList) {
+            filterChain.doFilter(request, response);
+            return;
         }
 
+        try {
+            if (isValidToken(token)) {
+                System.out.println(token);
+            } else {
+                throw new RuntimeException();
+            }
+            filterChain.doFilter(request, response);
+
+        } catch (Exception e) {
+            handleException(response, e);
+        }
     }
 
     private String getToken(HttpServletRequest request) {
         String authorizationField = request.getHeader("Authorization");
         if (authorizationField != null && authorizationField.startsWith("Bearer ")) {
-            return authorizationField.substring(7); // "Bearer " 다음의 문자열이 사용자 ID
+            return authorizationField.substring(7); // "Bearer " 다음의 문자열이 토큰
         }
         return null;
     }
 
     private boolean isValidToken(String token) {
-        return tokenManager.verifyToken(token) != null;
+        return token != null && tokenManager.verifyToken(token) != null;
     }
 
+    private void handleException(HttpServletResponse response, Exception e) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        ErrorResult errorResult = new ErrorResult(HttpStatus.UNAUTHORIZED, "잘못된 토큰입니다.");
+        if (e instanceof ExpiredJwtException) {
+            errorResult.setMessage("만료된 토큰입니다.");
+        } else if (e instanceof MalformedJwtException || e instanceof UnsupportedJwtException) {
+            errorResult.setMessage("잘못된 토큰입니다.");
+        }
+        response.getWriter().write(objectMapper.writeValueAsString(errorResult));
+    }
 }

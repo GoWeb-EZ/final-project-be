@@ -38,7 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<AuthenticationFilter> customFilterRegistration() {
         FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new AuthenticationFilter(tokenManager));
-        registrationBean.addUrlPatterns("/*"); // Filter가 적용될 URL 패턴 설정
+        registrationBean.addUrlPatterns("*"); // Filter가 적용될 URL 패턴 설정
         return registrationBean;
     }
 }
