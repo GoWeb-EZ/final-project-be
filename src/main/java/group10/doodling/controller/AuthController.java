@@ -21,7 +21,7 @@ public class AuthController {
     private final TokenManager tokenManager;
 
     @GetMapping("/login-url")
-    public ResponseEntity<LoginURLResponseDTO> getLoginURL() {  // 미구현
+    public ResponseEntity<LoginURLResponseDTO> getLoginURL() {
         String loginURL = authService.createRedirectURI(AuthService.OauthType.KAKAO);
 
         LoginURLResponseDTO loginURLResponseDTO = new LoginURLResponseDTO();

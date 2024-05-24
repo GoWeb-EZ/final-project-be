@@ -7,6 +7,8 @@ import group10.doodling.controller.dto.response.note.readNote.detail.ReadDetailN
 import group10.doodling.controller.dto.response.note.readNote.preview.ReadPreviewNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.updateNote.UpdateNoteResponseDTO;
 import group10.doodling.util.annotation.UserId;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/note")
 public class NoteController {
+
 
     @PostMapping
     public ResponseEntity<CreateNoteResponseDTO> createNote(@UserId String userId, @RequestBody CreateNoteRequestDTO createNoteRequestDTO) {
