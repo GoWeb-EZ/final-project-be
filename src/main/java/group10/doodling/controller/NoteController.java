@@ -33,7 +33,7 @@ public class NoteController {
     }
 
     @GetMapping("/preview")
-    public ResponseEntity<ReadPreviewNoteResponseDTO> readPreviewNote(@UserId String userId, @RequestParam String noteId) {
+    public ResponseEntity<ReadPreviewNoteResponseDTO> readPreviewNote(@UserId String userId) {
         ReadPreviewNoteResponseDTO readPreviewNoteResponseDTO = new ReadPreviewNoteResponseDTO();
 
         /*
