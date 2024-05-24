@@ -1,6 +1,6 @@
 package group10.doodling.controller;
 
-import group10.doodling.controller.response.CreateNoteResponseDTO;
+import group10.doodling.controller.response.note.createNote.CreateNoteResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

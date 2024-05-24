@@ -1,11 +1,10 @@
-package group10.doodling.controller.response;
+package group10.doodling.controller.response.note.deleteNote;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class CreateNoteResponseDTO {
-
+public class DeleteNoteResponseDTO {
     private boolean isSuccess;
     private String message;
 }
