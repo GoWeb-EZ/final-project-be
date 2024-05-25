@@ -1,6 +1,7 @@
 package group10.doodling.controller;
 
 import group10.doodling.controller.dto.request.note.createNote.CreateNoteRequestDTO;
+import group10.doodling.controller.dto.request.note.updateNote.UpdateNoteRequestDTO;
 import group10.doodling.controller.dto.response.note.createNote.CreateNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.deleteNote.DeleteNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.readNote.detail.ReadDetailNoteResponseDTO;
@@ -62,7 +63,7 @@ public class NoteController {
     }
 
     @PatchMapping
-    public ResponseEntity<UpdateNoteResponseDTO> updateNote(@UserId String userId, @RequestParam String noteId) {
+    public ResponseEntity<UpdateNoteResponseDTO> updateNote(@UserId String userId, @RequestBody UpdateNoteRequestDTO updateNoteRequestDTO) {
         UpdateNoteResponseDTO updateNoteResponseDTO = new UpdateNoteResponseDTO();
 
         /*
