@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import group10.doodling.component.TokenManager;
 import group10.doodling.controller.dto.request.auth.OauthUserInfoResponseDTO;
 import group10.doodling.controller.dto.response.auth.LoginURLResponseDTO;
+import group10.doodling.controller.dto.response.auth.TokenResponseDTO;
 import group10.doodling.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class AuthController {
     }
 
     @GetMapping("/login/oauth2/callback")
-    public ResponseEntity<String> login(@RequestParam String code) throws JsonProcessingException {
+    public ResponseEntity<TokenResponseDTO> login(@RequestParam String code) throws JsonProcessingException {
 
         String accessToken = authService.getAccessToken(AuthService.OauthType.KAKAO, code);
         OauthUserInfoResponseDTO oauthUserInfoResponseDTO = authService.getUserInfoByOauthAPI(AuthService.OauthType.KAKAO, accessToken);
@@ -38,8 +39,10 @@ public class AuthController {
         String userId = authService.login(oauthUserInfoResponseDTO.getOauthId(), oauthUserInfoResponseDTO.getUsername());
 
         String token = tokenManager.generateToken(userId, oauthUserInfoResponseDTO.getUsername());
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
+        tokenResponseDTO.setToken(token);
 
-        return ResponseEntity.ok().body(token);
+        return ResponseEntity.ok().body(tokenResponseDTO);
     }
 
 
