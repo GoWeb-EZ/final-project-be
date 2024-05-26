@@ -21,6 +21,8 @@ jobs:
       KAKAO_CLIENT_KEY: ${{ secrets.KAKAO_CLIENT_KEY }}
       KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
       HOST_ADDRESS: ${{ secrets.EC2_HOST }}
+      KAKAO_WORK_BOT_KEY: ${{ secrets.KAKAO_WORK_BOT_KEY }}
+      KAKAO_WORK_ROOM_ID: ${{ secrets.KAKAO_WORK_ROOM_ID }}
 
     steps:
       - uses: actions/checkout@v3
