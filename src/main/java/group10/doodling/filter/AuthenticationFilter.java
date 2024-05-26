@@ -28,7 +28,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             "/",
             "/api-docs",
             "/api/auth/login-url",
-            "/api/auth/login/oauth2/callback"
+            "/api/auth/login/oauth2/callback",
+            "/api/test-exception",
+            "/api/test-mongodb-user"
     };
     private final TokenManager tokenManager;
     private final ObjectMapper objectMapper = new ObjectMapper();

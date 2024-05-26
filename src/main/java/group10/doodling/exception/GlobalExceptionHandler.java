@@ -1,15 +1,18 @@
 package group10.doodling.exception;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -26,19 +29,26 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(Exception.class)
-    public void handleException(Exception ex) {
-        sendKErrorMessageToKakaoWorkAPI(ex.getMessage());
+    public void handleException(Exception ex, HttpServletRequest request) throws JsonProcessingException {
+        sendKErrorMessageToKakaoWorkAPI(request.getMethod(), request.getRequestURI(), ex);
     }
 
 
-    private void sendKErrorMessageToKakaoWorkAPI(String message) {
+    private void sendKErrorMessageToKakaoWorkAPI(String method, String uri, Exception ex) throws JsonProcessingException {
         HttpHeaders headers = createAuthorizationHeader();
-        MultiValueMap<String,String> body = new LinkedMultiValueMap<>();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        body.add("conversation_id", KAKAO_WORK_ROOM_ID);
-        body.add("text", message);
+        String stacktrace = ExceptionUtils.getStackTrace(ex);
+        String message = "URI: ["+ method + " " + uri + "]\n" + "Invoked: " + (new Date()).toString() + "\n" + stacktrace;
+        Map<String, String> jsonBody = new HashMap<>();
+        jsonBody.put("conversation_id", KAKAO_WORK_ROOM_ID);
+        jsonBody.put("text", message);
 
-        ResponseEntity<String> userInfoResponse = restTemplate.postForEntity(KAKAO_WORK_BOT_ENDPOINT, new HttpEntity<>(body, headers), String.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = objectMapper.writeValueAsString(jsonBody);
+
+        ResponseEntity<String> userInfoResponse = restTemplate.postForEntity(KAKAO_WORK_BOT_ENDPOINT, new HttpEntity<>(jsonString, headers), String.class);
     }
 
     HttpHeaders createAuthorizationHeader(){

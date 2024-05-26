@@ -15,3 +15,9 @@ oauth:
   kakao-client-secret: ${KAKAO_CLIENT_SECRET}
 
 host-address: ${HOST_ADDRESS}
+
+errorbot:
+  kakao-work:
+    key: ${KAKAO_WORK_BOT_KEY}
+    room-id: ${KAKAO_WORK_ROOM_ID}
+
