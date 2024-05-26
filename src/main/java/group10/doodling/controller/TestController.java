@@ -21,4 +21,9 @@ public class TestController {
 
         userRepository.save(test);
     }
+
+    @GetMapping("/api/test-exception")
+    public void testException() {
+        throw new InternalError();
+    }
 }
