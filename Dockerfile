@@ -2,7 +2,7 @@
 FROM openjdk:17-jdk-alpine
 
 # 작업 디렉토리를 설정합니다.
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # 호스트의 JAR 파일을 컨테이너의 작업 디렉토리로 복사합니다.
 COPY ./build/libs/*.jar /app/application.jar
