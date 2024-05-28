@@ -21,3 +21,5 @@ errorbot:
     key: ${KAKAO_WORK_BOT_KEY}
     room-id: ${KAKAO_WORK_ROOM_ID}
 
+file:
+  dir: ${FILE_DIR}
