@@ -26,4 +26,9 @@ public class TestController {
     public void testException() {
         throw new InternalError();
     }
+
+    @PostMapping("/api/test-upload")
+    public void testUpload() {
+
+    }
 }
