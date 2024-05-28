@@ -73,7 +73,7 @@ jobs:
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/goweb-final-be:latest
             sudo docker stop goweb-final-be || true
-            sudo docker run -e MONGODB_URI="${{ secrets.MONGODB_URI }}" -e JWT_SECRET_STRING="${{ secrets.JWT_SECRET_STRING }}" -e KAKAO_CLIENT_KEY="${{ secrets.KAKAO_CLIENT_KEY }}" -e KAKAO_CLIENT_SECRET="${{ secrets.KAKAO_CLIENT_SECRET }}" -e HOST_ADDRESS="${{ secrets.EC2_HOST }}" -e KAKAO_WORK_BOT_KEY="${{ secrets.KAKAO_WORK_BOT_KEY }}" -e KAKAO_WORK_ROOM_ID="${{ secrets.KAKAO_WORK_ROOM_ID }}" -v ${{ secrets.FILE_DIR }} --name goweb-final-be --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/goweb-final-be
+            sudo docker run -e MONGODB_URI="${{ secrets.MONGODB_URI }}" -e JWT_SECRET_STRING="${{ secrets.JWT_SECRET_STRING }}" -e KAKAO_CLIENT_KEY="${{ secrets.KAKAO_CLIENT_KEY }}" -e KAKAO_CLIENT_SECRET="${{ secrets.KAKAO_CLIENT_SECRET }}" -e HOST_ADDRESS="${{ secrets.EC2_HOST }}" -e KAKAO_WORK_BOT_KEY="${{ secrets.KAKAO_WORK_BOT_KEY }}" -e KAKAO_WORK_ROOM_ID="${{ secrets.KAKAO_WORK_ROOM_ID }}" --name goweb-final-be --rm -v /images:/usr/src/app/images -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/goweb-final-be
             sudo docker system prune -f
 #      #1. 최신 이미지를 풀받습니다
 #        sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
