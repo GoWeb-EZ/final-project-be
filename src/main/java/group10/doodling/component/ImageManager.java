@@ -48,7 +48,7 @@ public class ImageManager {
     private String createStoreFileName(String originalFilename) {
         String ext = extractExt(originalFilename);
         String uuid = UUID.randomUUID().toString();
-        return uuid + "." + ext;
+        return uuid + "." + "png";
     }
 
     private String extractExt(String originalFilename) {

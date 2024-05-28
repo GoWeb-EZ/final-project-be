@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
@@ -28,10 +29,10 @@ public class ImageController {
     public ResponseEntity<Resource> downloadImage(@RequestParam String fileName) throws
             IOException {
         String fullPath = imageManager.getFullPath(fileName);
-        MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(fullPath)));
+        //MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(fullPath)));
         UrlResource resource = new UrlResource("file:" + fullPath);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_PNG_VALUE)
                 .body(resource);
     }
 
