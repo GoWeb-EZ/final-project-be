@@ -31,6 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public void handleException(Exception ex, HttpServletRequest request) throws JsonProcessingException {
         sendKErrorMessageToKakaoWorkAPI(request.getMethod(), request.getRequestURI(), ex);
+        ex.printStackTrace();
     }
 
 

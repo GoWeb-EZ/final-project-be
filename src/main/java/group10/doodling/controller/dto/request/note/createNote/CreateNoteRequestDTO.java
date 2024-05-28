@@ -1,8 +1,9 @@
 package group10.doodling.controller.dto.request.note.createNote;
 
-import group10.doodling.controller.dto.common.TransformedImageDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,5 +13,5 @@ public class CreateNoteRequestDTO {
     private String date;
     private List<String> tags;
     private String content;
-    private List<TransformedImageDTO> images = new ArrayList<>();
+    private List<String> imageTexts = new ArrayList<>();
 }

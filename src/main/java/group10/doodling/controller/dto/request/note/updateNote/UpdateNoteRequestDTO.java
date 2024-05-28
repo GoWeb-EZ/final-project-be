@@ -1,6 +1,5 @@
 package group10.doodling.controller.dto.request.note.updateNote;
 
-import group10.doodling.controller.dto.common.TransformedImageDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +12,5 @@ public class UpdateNoteRequestDTO {
     private String date;
     private List<String> tags;
     private String content;
-    private List<TransformedImageDTO> images = new ArrayList<>();
+    private List<String> imageTexts = new ArrayList<>();
 }
