@@ -3,6 +3,7 @@ package group10.doodling.controller;
 import group10.doodling.component.ImageManager;
 import group10.doodling.controller.dto.common.ImageMetaDataDTO;
 import group10.doodling.controller.dto.request.note.createNote.CreateNoteRequestDTO;
+import group10.doodling.entity.Note;
 import group10.doodling.entity.User;
 import group10.doodling.repository.UserRepository;
 import group10.doodling.util.annotation.UserId;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Hidden
 @RestController
@@ -58,6 +60,14 @@ public class TestController {
             @RequestPart(required = false) CreateNoteRequestDTO createNoteRequestDTO) {
 
 
+        Optional<User> existingUser = userRepository.findByName("정세호");
+
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+
+        } else {
+            System.out.println("none");
+        }
 
     }
 }
