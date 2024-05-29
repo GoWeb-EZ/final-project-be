@@ -6,6 +6,8 @@ import group10.doodling.controller.dto.request.note.createNote.CreateNoteRequest
 import group10.doodling.entity.Note;
 import group10.doodling.entity.User;
 import group10.doodling.repository.UserRepository;
+import group10.doodling.service.NoteService;
+import group10.doodling.service.UserService;
 import group10.doodling.util.annotation.UserId;
 import group10.doodling.util.data.UploadImage;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -26,6 +28,8 @@ public class TestController {
 
     private final UserRepository userRepository;
     private final ImageManager imageManager;
+    private final NoteService noteService;
+    private final UserService userService;
 
     @PostMapping("/api/test-mongodb-user")
     public void testMongoDBUserInsert(@RequestParam String name) {
@@ -41,7 +45,7 @@ public class TestController {
     }
 
     @PostMapping("/api/test-upload")
-    public ResponseEntity<List<ImageMetaDataDTO>> testUpload(@RequestParam("images") List<MultipartFile> images,
+    public ResponseEntity<List<ImageMetaDataDTO>> testUpload(@RequestParam(value = "images", required = false) List<MultipartFile> images,
                                                        @RequestPart(required = false) CreateNoteRequestDTO createNoteRequestDTO) throws IOException {
         List<UploadImage> uploadImages = imageManager.saveImages(images);
         List<ImageMetaDataDTO> imageMetaDataList = new ArrayList<>();
@@ -55,19 +59,29 @@ public class TestController {
     }
 
     @PostMapping("/api/test-create-note")
-    public void testCreateNote(
-            @RequestParam("images") List<MultipartFile> images,
-            @RequestPart(required = false) CreateNoteRequestDTO createNoteRequestDTO) {
+    public String testCreateNote(
+            @RequestPart(value = "images", required = false) List<MultipartFile> images,
+            @RequestPart (value = "CreateNoteRequestDTO", required = false) CreateNoteRequestDTO createNoteRequestDTO) throws IOException {
 
 
         Optional<User> existingUser = userRepository.findByName("정세호");
-
+        String result ="";
         if (existingUser.isPresent()) {
             User user = existingUser.get();
+            String userId = user.getId();
+            String title = createNoteRequestDTO.getTitle();
+            String content = createNoteRequestDTO.getContent();
+            List<String> tags = createNoteRequestDTO.getTags();
+            List<String> imageTexts = createNoteRequestDTO.getImageTexts();
+            String createdAt = createNoteRequestDTO.getCreatedAt();
+
+            Note note = noteService.createNote(userId, title, content, tags, createdAt, images, imageTexts);
+
+            return userService.saveUserNote(user.getId(), note);
 
         } else {
             System.out.println("none");
         }
-
+        return result;
     }
 }

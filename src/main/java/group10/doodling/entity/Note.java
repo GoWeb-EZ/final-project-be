@@ -18,6 +18,7 @@ public class Note extends UuidIdentifiedEntity {
     private String title;
     private String content;
     private String createdAt;
+    private List<String> tags = new ArrayList<>();
 
     @DBRef
     private List<Image> images = new ArrayList<>();

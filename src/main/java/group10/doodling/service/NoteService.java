@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,28 +20,34 @@ public class NoteService {
     private final NoteRepository noteRepository;
     private final ImageService imageService;
 
-    public String createNote(String userId, String title, String content, String createdAt, List<MultipartFile> images, List<String> imageTexts) throws IOException {
+    public Note createNote(String userId, String title, String content, List<String> tags, String createdAt, List<MultipartFile> images, List<String> imageTexts) throws IOException {
 
-        Note note = createBaseNoteEntity(userId, title, content, createdAt);
-        Note savedNote = noteRepository.save(note);
+        Note baseNoteEntity = createBaseNoteEntity(userId, title, content, tags, createdAt);
+        Note note = noteRepository.save(baseNoteEntity);
 
-        List<Image> savedImages = imageService.createImage(savedNote.getId(), images, imageTexts);
-        List<Image> result = concatImageList(savedNote.getImages(), savedImages);
+        List<Image> savedImages = imageService.createImage(note.getId(), images, imageTexts);
+        List<Image> result = concatList(note.getImages(), savedImages);
 
-        savedNote.setImages(result);
+        note.setImages(result);
 
-        return savedNote.getId();
+        return noteRepository.save(note);
     }
 
-    private Note createBaseNoteEntity(String userId, String title, String content, String createdAt) {
+    private Note createBaseNoteEntity(String userId, String title, String content, List<String> tags, String createdAt) {
         return Note.builder()
                 .userId(userId)
                 .title(title)
                 .content(content)
+                .tags(tags)
                 .createdAt(createdAt).build();
     }
 
-    private List<Image> concatImageList(List<Image> list1, List<Image> list2) {
+    private List<Image> concatList(List<Image> list1, List<Image> list2) {
+        if (list1 == null)
+            list1 = Collections.emptyList();
+        if (list2 == null)
+            list2 = Collections.emptyList();
+
         return Stream.of(list1, list2).flatMap(Collection::stream).toList();
     }
 }
