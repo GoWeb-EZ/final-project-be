@@ -1,8 +1,6 @@
 package group10.doodling.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +9,7 @@ import java.util.List;
 
 @Document("note")
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Note extends UuidIdentifiedEntity {
