@@ -5,6 +5,7 @@ import group10.doodling.controller.dto.common.ImageMetaDataDTO;
 import group10.doodling.controller.dto.request.note.createNote.CreateNoteRequestDTO;
 import group10.doodling.entity.User;
 import group10.doodling.repository.UserRepository;
+import group10.doodling.util.annotation.UserId;
 import group10.doodling.util.data.UploadImage;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +50,14 @@ public class TestController {
             imageMetaDataList.add(imageMetaDataDTO);
         }
         return ResponseEntity.ok().body(imageMetaDataList);
+    }
+
+    @PostMapping("/api/test-create-note")
+    public void testCreateNote(
+            @RequestParam("images") List<MultipartFile> images,
+            @RequestPart(required = false) CreateNoteRequestDTO createNoteRequestDTO) {
+
+
+
     }
 }
