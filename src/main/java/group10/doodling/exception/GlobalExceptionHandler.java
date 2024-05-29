@@ -2,6 +2,7 @@ package group10.doodling.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import group10.doodling.controller.dto.common.ErrorResult;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,9 +30,13 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(Exception.class)
-    public void handleException(Exception ex, HttpServletRequest request) throws JsonProcessingException {
+    public ResponseEntity<ErrorResult> handleException(Exception ex, HttpServletRequest request) throws JsonProcessingException {
         sendKErrorMessageToKakaoWorkAPI(request.getMethod(), request.getRequestURI(), ex);
         ex.printStackTrace();
+
+        ErrorResult errorResult = new ErrorResult(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+
+        return ResponseEntity.internalServerError().body(errorResult);
     }
 
 

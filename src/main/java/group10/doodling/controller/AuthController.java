@@ -31,13 +31,11 @@ public class AuthController {
     }
 
     @GetMapping("/login/oauth2/callback")
-    public ResponseEntity<TokenResponseDTO> login(@RequestParam String code) throws JsonProcessingException {
+    public ResponseEntity<TokenResponseDTO> login(@RequestParam String code, @RequestParam("redirect_uri") String redirectURI) throws JsonProcessingException {
 
-        String accessToken = authService.getAccessToken(AuthService.OauthType.KAKAO, code);
+        String accessToken = authService.getAccessToken(AuthService.OauthType.KAKAO, code, redirectURI);
         OauthUserInfoResponseDTO oauthUserInfoResponseDTO = authService.getUserInfoByOauthAPI(AuthService.OauthType.KAKAO, accessToken);
-
         String userId = authService.login(oauthUserInfoResponseDTO.getOauthId(), oauthUserInfoResponseDTO.getUsername());
-
         String token = tokenManager.generateToken(userId, oauthUserInfoResponseDTO.getUsername());
         TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
         tokenResponseDTO.setToken(token);

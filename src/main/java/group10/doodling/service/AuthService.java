@@ -47,13 +47,13 @@ public class AuthService {
         return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+KAKAO_CLIENT_KEY+"&redirect_uri=http://"+HOST_ADDRESS+":8080/api/auth/login/oauth2/callback";
     }
 
-    public String getAccessToken(OauthType oauthType, String code) throws JsonProcessingException {
+    public String getAccessToken(OauthType oauthType, String code, String redirectURI) throws JsonProcessingException {
         if (oauthType.equals(OauthType.KAKAO))
-            return getKakaoOauthAccessToken(code);
+            return getKakaoOauthAccessToken(code, redirectURI);
         return null;
     }
 
-    private String getKakaoOauthAccessToken(String code) throws JsonProcessingException {
+    private String getKakaoOauthAccessToken(String code, String redirectURI) throws JsonProcessingException {
 
         String kakaoOauthTokenEndPoint = "https://kauth.kakao.com/oauth/token";
 
@@ -64,7 +64,7 @@ public class AuthService {
 
         body.add("grant_type","authorization_code");
         body.add("client_id", KAKAO_CLIENT_KEY);
-        body.add("redirect_uri","http://"+HOST_ADDRESS+":8080/api/auth/login/oauth2/callback");
+        body.add("redirect_uri",redirectURI);
         body.add("code",code);
 
 

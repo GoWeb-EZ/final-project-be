@@ -26,7 +26,7 @@ public class ImageController {
 
     @ResponseBody
     @GetMapping("api/image")
-    public ResponseEntity<Resource> downloadImage(@RequestParam String fileName) throws
+    public ResponseEntity<Resource> downloadImage(@RequestParam("file_name") String fileName) throws
             IOException {
         String fullPath = imageManager.getFullPath(fileName);
         //MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(fullPath)));
