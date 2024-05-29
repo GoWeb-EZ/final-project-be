@@ -2,6 +2,8 @@ package group10.doodling.util.argumentResolver;
 
 import group10.doodling.component.TokenManager;
 import group10.doodling.util.annotation.UserId;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -35,13 +37,12 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
         // 토큰을 파싱하여 사용자 ID 추출
         String token = getTokenArea(authorizationField);
 
-        return token;
-        // 커스텀 어노테이션(@UserId)이 적용된 파라미터에 사용자 ID 주입
-//        if (parsedToken != null) {
-//            Jws<Claims> claimsJws = tokenManager.verifyToken(parsedToken);
-//            return claimsJws.getPayload().getSubject();
-//        }
-
+        //커스텀 어노테이션(@UserId)이 적용된 파라미터에 사용자 ID 주입
+        if (token != null) {
+            Jws<Claims> claimsJws = tokenManager.verifyToken(token);
+            return claimsJws.getPayload().get("user_id");
+        }
+        return null;
     }
 
     private String getTokenArea(String authorizationField) {

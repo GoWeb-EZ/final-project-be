@@ -33,7 +33,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             "/api/test-mongodb-user",
             "/api/test-upload",
             "/api/image",
-            "/api/test-create-note"
+            "/api/test-create-note",
+            "/code"
     };
     private final TokenManager tokenManager;
     private final ObjectMapper objectMapper = new ObjectMapper();

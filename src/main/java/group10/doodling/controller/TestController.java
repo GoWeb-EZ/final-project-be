@@ -77,11 +77,17 @@ public class TestController {
 
             Note note = noteService.createNote(userId, title, content, tags, createdAt, images, imageTexts);
 
-            return userService.saveUserNote(user.getId(), note);
+            String s = userService.saveUserNote(user.getId(), note);
+            return s;
 
         } else {
             System.out.println("none");
         }
         return result;
+    }
+
+    @GetMapping("/code")
+    public String getCode(@RequestParam String code) {
+        return code;
     }
 }

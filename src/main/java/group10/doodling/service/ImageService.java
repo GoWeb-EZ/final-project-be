@@ -24,7 +24,6 @@ public class ImageService {
         List<Image> noteImages = IntStream.range(0, uploadImages.size())
                 .mapToObj(i -> new Image(noteId, uploadImages.get(i).getStoreFileName(), imageTexts.get(i)))
                 .toList();
-        System.out.println("noteImages = " + noteImages);
         return imageRepository.saveAll(noteImages);
     }
 
