@@ -131,8 +131,10 @@ public class TestController {
     }
 
     @GetMapping("/api/test-detail-note")
-    public ResponseEntity<ReadDetailNoteResponseDTO> getNoteDetail(@UserId String userId, @RequestParam String noteId) {
-        ReadDetailNoteResponseDTO responseDTO = noteService.getDetailNote(noteId, userId);
+    public ResponseEntity<ReadDetailNoteResponseDTO> getNoteDetail(@RequestParam String noteId) {
+        User user = userRepository.findByName("정세호").orElseThrow(() -> new RuntimeException("Note not found"));
+
+        ReadDetailNoteResponseDTO responseDTO = noteService.getDetailNote(noteId, user.getId());
         return ResponseEntity.ok(responseDTO);
     }
 
