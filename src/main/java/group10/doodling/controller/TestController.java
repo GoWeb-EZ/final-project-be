@@ -5,6 +5,7 @@ import group10.doodling.controller.dto.common.ImageMetaDataDTO;
 import group10.doodling.controller.dto.request.note.createNote.CreateNoteRequestDTO;
 import group10.doodling.controller.dto.request.note.updateNote.UpdateNoteRequestDTO;
 import group10.doodling.controller.dto.response.note.deleteNote.DeleteNoteResponseDTO;
+import group10.doodling.controller.dto.response.note.readNote.preview.ReadPreviewNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.updateNote.UpdateNoteResponseDTO;
 import group10.doodling.entity.Note;
 import group10.doodling.entity.User;
@@ -118,6 +119,14 @@ public class TestController {
         response.setSuccess(true);
         response.setMessage("노트 삭제 성공");
         return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/api/test-preview-note")
+    public ResponseEntity<ReadPreviewNoteResponseDTO> getNotePreviews() {
+        User user = userRepository.findByName("정세호").orElseThrow(() -> new RuntimeException("Note not found"));
+
+        ReadPreviewNoteResponseDTO responseDTO = noteService.getNotePreviews(user.getId());
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/code")

@@ -1,6 +1,8 @@
 package group10.doodling.service;
 
 import group10.doodling.controller.dto.request.note.updateNote.UpdateNoteRequestDTO;
+import group10.doodling.controller.dto.response.note.readNote.preview.NotePreviewDataDTO;
+import group10.doodling.controller.dto.response.note.readNote.preview.ReadPreviewNoteResponseDTO;
 import group10.doodling.entity.Image;
 import group10.doodling.entity.Note;
 import group10.doodling.repository.NoteRepository;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -33,6 +36,25 @@ public class NoteService {
         return noteRepository.save(note);
     }
 
+    public ReadPreviewNoteResponseDTO getNotePreviews(String userId) {
+        List<Note> notes = noteRepository.findByUserId(userId);
+
+        List<NotePreviewDataDTO> notePreviews = notes.stream().map(note -> {
+            NotePreviewDataDTO previewData = new NotePreviewDataDTO();
+            previewData.setNoteId(note.getId());
+            previewData.setDate(note.getCreatedAt());
+            previewData.setTags(note.getTags());
+            previewData.setPreview(note.getContent().substring(0, Math.min(note.getContent().length(), 40)));
+            return previewData;
+        }).collect(Collectors.toList());
+
+        ReadPreviewNoteResponseDTO responseDTO = new ReadPreviewNoteResponseDTO();
+        responseDTO.setSuccess(true);
+        responseDTO.setMessage("내 노트 리스트 조회에 성공했습니다.");
+        responseDTO.setResult(notePreviews);
+
+        return responseDTO;
+    }
 
     public Note updateNote(String noteId, List<MultipartFile> images, UpdateNoteRequestDTO updateNoteRequestDTO) throws IOException {
         Note note = noteRepository.findById(noteId)

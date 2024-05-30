@@ -51,17 +51,9 @@ public class NoteController {
     }
 
     @GetMapping("/preview")
-    public ResponseEntity<ReadPreviewNoteResponseDTO> readPreviewNote(@UserId String userId) {
-        ReadPreviewNoteResponseDTO readPreviewNoteResponseDTO = new ReadPreviewNoteResponseDTO();
-
-        /*
-        * 노트 읽기(Preview) 로직 추가 후 DTO 에 저장 후 return
-        * */
-
-        readPreviewNoteResponseDTO.setMessage("미구현");
-        readPreviewNoteResponseDTO.setSuccess(false);
-
-        return ResponseEntity.ok().body(readPreviewNoteResponseDTO);
+    public ResponseEntity<ReadPreviewNoteResponseDTO> getNotePreviews(@UserId String userId) {
+        ReadPreviewNoteResponseDTO responseDTO = noteService.getNotePreviews(userId);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/detail")
