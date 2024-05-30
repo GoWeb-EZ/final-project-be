@@ -3,6 +3,8 @@ package group10.doodling.controller;
 import group10.doodling.component.ImageManager;
 import group10.doodling.controller.dto.common.ImageMetaDataDTO;
 import group10.doodling.controller.dto.request.note.createNote.CreateNoteRequestDTO;
+import group10.doodling.controller.dto.request.note.updateNote.UpdateNoteRequestDTO;
+import group10.doodling.controller.dto.response.note.updateNote.UpdateNoteResponseDTO;
 import group10.doodling.entity.Note;
 import group10.doodling.entity.User;
 import group10.doodling.repository.UserRepository;
@@ -84,6 +86,24 @@ public class TestController {
             System.out.println("none");
         }
         return result;
+    }
+
+    @PatchMapping("/api/test-update-note")
+    public ResponseEntity<UpdateNoteResponseDTO> testUpdateNote(
+                                                            @RequestParam String noteId,
+                                                            @RequestPart(value = "images", required = false) List<MultipartFile> images,
+                                                            @RequestPart(value = "UpdateNoteRequestDTO", required = false) UpdateNoteRequestDTO updateNoteRequestDTO) throws IOException {
+
+        Note note = noteService.updateNote(noteId, images, updateNoteRequestDTO);
+
+        User user = userRepository.findByName("정세호").orElseThrow(() -> new RuntimeException("Note not found"));
+        userService.updateUserNoteList(user.getId(), note);
+
+        UpdateNoteResponseDTO response = new UpdateNoteResponseDTO();
+        response.setSuccess(true);
+        response.setMessage("노트 수정에 성공했습니다.");
+
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/code")
