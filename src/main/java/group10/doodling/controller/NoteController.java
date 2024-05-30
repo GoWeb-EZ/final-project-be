@@ -98,17 +98,13 @@ public class NoteController {
 
     @DeleteMapping
     public ResponseEntity<DeleteNoteResponseDTO> deleteNote(@UserId String userId, @RequestParam String noteId) {
-        DeleteNoteResponseDTO deleteNoteResponseDTO = new DeleteNoteResponseDTO();
+        noteService.deleteNote(noteId);
+        userService.deleteUserNote(userId, noteId);
 
-        /*
-         * 노트 삭제 로직 추가 후 DTO 에 저장 후 return
-         * */
-
-        deleteNoteResponseDTO.setMessage("미구현");
-        deleteNoteResponseDTO.setSuccess(false);
-
-        return ResponseEntity.ok().body(deleteNoteResponseDTO);
+        DeleteNoteResponseDTO response = new DeleteNoteResponseDTO();
+        response.setSuccess(true);
+        response.setMessage("노트 삭제 성공");
+        return ResponseEntity.ok().body(response);
     }
-
-
 }
+

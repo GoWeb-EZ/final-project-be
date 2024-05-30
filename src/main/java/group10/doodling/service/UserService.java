@@ -43,10 +43,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void deleteUserNote(String userId, Note note) {
+    public void deleteUserNote(String userId, String noteId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        user.getNotes().remove(note);
+        user.getNotes().removeIf(note -> note.getId().equals(noteId));
         userRepository.save(user);
     }
 }
