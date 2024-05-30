@@ -5,6 +5,7 @@ import group10.doodling.controller.dto.common.ImageMetaDataDTO;
 import group10.doodling.controller.dto.request.note.createNote.CreateNoteRequestDTO;
 import group10.doodling.controller.dto.request.note.updateNote.UpdateNoteRequestDTO;
 import group10.doodling.controller.dto.response.note.deleteNote.DeleteNoteResponseDTO;
+import group10.doodling.controller.dto.response.note.readNote.detail.ReadDetailNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.readNote.preview.ReadPreviewNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.updateNote.UpdateNoteResponseDTO;
 import group10.doodling.entity.Note;
@@ -122,10 +123,16 @@ public class TestController {
     }
 
     @GetMapping("/api/test-preview-note")
-    public ResponseEntity<ReadPreviewNoteResponseDTO> getNotePreviews() {
+    public ResponseEntity<ReadPreviewNoteResponseDTO> getNotePreview() {
         User user = userRepository.findByName("정세호").orElseThrow(() -> new RuntimeException("Note not found"));
 
-        ReadPreviewNoteResponseDTO responseDTO = noteService.getNotePreviews(user.getId());
+        ReadPreviewNoteResponseDTO responseDTO = noteService.getPreviewNote(user.getId());
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @GetMapping("/api/test-detail-note")
+    public ResponseEntity<ReadDetailNoteResponseDTO> getNoteDetail(@UserId String userId, @RequestParam String noteId) {
+        ReadDetailNoteResponseDTO responseDTO = noteService.getDetailNote(noteId, userId);
         return ResponseEntity.ok(responseDTO);
     }
 

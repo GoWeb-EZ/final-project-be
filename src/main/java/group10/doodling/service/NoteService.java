@@ -1,6 +1,9 @@
 package group10.doodling.service;
 
+import group10.doodling.controller.dto.common.ImageMetaDataDTO;
 import group10.doodling.controller.dto.request.note.updateNote.UpdateNoteRequestDTO;
+import group10.doodling.controller.dto.response.note.readNote.detail.NoteDetailDataDTO;
+import group10.doodling.controller.dto.response.note.readNote.detail.ReadDetailNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.readNote.preview.NotePreviewDataDTO;
 import group10.doodling.controller.dto.response.note.readNote.preview.ReadPreviewNoteResponseDTO;
 import group10.doodling.entity.Image;
@@ -36,7 +39,7 @@ public class NoteService {
         return noteRepository.save(note);
     }
 
-    public ReadPreviewNoteResponseDTO getNotePreviews(String userId) {
+    public ReadPreviewNoteResponseDTO getPreviewNote(String userId) {
         List<Note> notes = noteRepository.findByUserId(userId);
 
         List<NotePreviewDataDTO> notePreviews = notes.stream().map(note -> {
@@ -52,6 +55,38 @@ public class NoteService {
         responseDTO.setSuccess(true);
         responseDTO.setMessage("내 노트 리스트 조회에 성공했습니다.");
         responseDTO.setResult(notePreviews);
+
+        return responseDTO;
+    }
+
+    public ReadDetailNoteResponseDTO getDetailNote(String noteId, String userId) {
+        Note note = noteRepository.findById(noteId)
+                .orElseThrow(() -> new RuntimeException("Note not found"));
+
+        if (!note.getUserId().equals(userId)) {
+            throw new RuntimeException("Unauthorized access");
+        }
+
+        NoteDetailDataDTO detailData = new NoteDetailDataDTO();
+        detailData.setContent(note.getContent());
+        detailData.setDate(note.getCreatedAt());
+        detailData.setTags(note.getTags());
+        detailData.setUserId(note.getUserId());
+
+        List<ImageMetaDataDTO> imageMetaDataList = note.getImages().stream().map(image -> {
+            ImageMetaDataDTO metaDataDTO = new ImageMetaDataDTO();
+            metaDataDTO.setText(image.getText());
+            metaDataDTO.setFileName(image.getStoreFileName());
+            return metaDataDTO;
+        }).collect(Collectors.toList());
+
+        detailData.setImageMetaDataList(imageMetaDataList);
+
+        ReadDetailNoteResponseDTO responseDTO = new ReadDetailNoteResponseDTO();
+        responseDTO.setSuccess(true);
+        responseDTO.setMessage("노트 상세 조회에 성공했습니다.");
+        responseDTO.setNoteId(note.getId());
+        responseDTO.setResult(detailData);
 
         return responseDTO;
     }
