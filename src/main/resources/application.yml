@@ -2,6 +2,15 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1GB
+
+server:
+  tomcat:
+    max-http-form-post-size: 1GB
+
 
 springdoc:
   swagger-ui:
