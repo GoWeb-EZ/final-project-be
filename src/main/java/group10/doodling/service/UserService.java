@@ -33,4 +33,20 @@ public class UserService {
             throw new IllegalArgumentException("User with ID " + userId + " not found");
         }
     }
+
+    public void updateUserNoteList(String userId, Note updatedNote) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.getNotes().removeIf(note -> note.getId().equals(updatedNote.getId()));
+        user.getNotes().add(updatedNote);
+        userRepository.save(user);
+    }
+
+    public void deleteUserNote(String userId, String noteId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.getNotes().removeIf(note -> note.getId().equals(noteId));
+        userRepository.save(user);
+    }
 }
