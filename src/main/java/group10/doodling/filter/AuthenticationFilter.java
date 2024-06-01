@@ -49,6 +49,11 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         String token = getToken(request);
         boolean isWhiteList = Arrays.asList(whiteList).contains(requestURI) || requestURI.startsWith("/swagger-ui") || requestURI.startsWith("/v3");
 
+        if (request.getMethod().equals("OPTIONS")) { // Preflight 요청 시 동작
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (isWhiteList) {
             filterChain.doFilter(request, response);
             return;
