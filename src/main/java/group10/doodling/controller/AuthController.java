@@ -44,11 +44,11 @@ public class AuthController {
     }
 
     @GetMapping("/verify")
-    public ResponseEntity<VerifyTokenResponseDTO> verify(@RequestBody VerifyTokenRequestDTO verifyTokenRequestDTO) {
+    public ResponseEntity<VerifyTokenResponseDTO> verify(@RequestParam String token) {
 
         VerifyTokenResponseDTO verifyTokenResponseDTO = new VerifyTokenResponseDTO();
         try {
-            tokenManager.verifyToken(verifyTokenRequestDTO.getToken());
+            tokenManager.verifyToken(token);
             verifyTokenResponseDTO.setValid(true);
             return ResponseEntity.ok().body(verifyTokenResponseDTO);
         } catch (Exception e) {
