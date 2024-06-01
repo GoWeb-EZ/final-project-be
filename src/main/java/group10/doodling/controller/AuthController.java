@@ -3,15 +3,15 @@ package group10.doodling.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import group10.doodling.component.TokenManager;
 import group10.doodling.controller.dto.request.auth.OauthUserInfoResponseDTO;
+import group10.doodling.controller.dto.request.auth.VerifyTokenRequestDTO;
 import group10.doodling.controller.dto.response.auth.LoginURLResponseDTO;
 import group10.doodling.controller.dto.response.auth.TokenResponseDTO;
+import group10.doodling.controller.dto.response.auth.VerifyTokenResponseDTO;
 import group10.doodling.service.AuthService;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -41,6 +41,20 @@ public class AuthController {
         tokenResponseDTO.setToken(token);
 
         return ResponseEntity.ok().body(tokenResponseDTO);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<VerifyTokenResponseDTO> verify(@RequestBody VerifyTokenRequestDTO verifyTokenRequestDTO) {
+
+        VerifyTokenResponseDTO verifyTokenResponseDTO = new VerifyTokenResponseDTO();
+        try {
+            tokenManager.verifyToken(verifyTokenRequestDTO.getToken());
+            verifyTokenResponseDTO.setValid(true);
+            return ResponseEntity.ok().body(verifyTokenResponseDTO);
+        } catch (Exception e) {
+            verifyTokenResponseDTO.setValid(false);
+            return ResponseEntity.ok().body(verifyTokenResponseDTO);
+        }
     }
 
 

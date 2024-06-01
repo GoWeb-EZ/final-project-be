@@ -17,6 +17,10 @@ public class TokenManager implements InitializingBean {
 
     @Value("${jwt.secret-string}")
     private String JWT_SECRET_STRING;
+
+    @Value("${host-address}")
+    private String HOST_ADDRESS;
+
     private final long EXPIRATION_TIME = 600 * 1000;
 
     @Override
@@ -36,14 +40,13 @@ public class TokenManager implements InitializingBean {
         Date expiry = new Date(now.getTime() + EXPIRATION_TIME);
 
         return Jwts.builder()
-                .issuer("http://localhost:8080/")
+                .issuer(HOST_ADDRESS)
                 .subject(username)
                 .issuedAt(now)
                 .claim("user_id", userId)
                 .expiration(expiry)
                 .signWith(getSignKey())
                 .compact();
-
     }
 
     public Jws<Claims> verifyToken(String jws) {
@@ -53,4 +56,5 @@ public class TokenManager implements InitializingBean {
                 .parseSignedClaims(jws);
 
     }
+
 }

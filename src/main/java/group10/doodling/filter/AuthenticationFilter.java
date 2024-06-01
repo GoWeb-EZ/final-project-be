@@ -29,6 +29,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             "/api-docs",
             "/api/auth/login-url",
             "/api/auth/login/oauth2/callback",
+            "/api/auth/verify",
             "/api/test-exception",
             "/api/test-mongodb-user",
             "/api/test-upload",
