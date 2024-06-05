@@ -13,7 +13,6 @@ import group10.doodling.entity.User;
 import group10.doodling.repository.UserRepository;
 import group10.doodling.service.NoteService;
 import group10.doodling.service.UserService;
-import group10.doodling.util.annotation.UserId;
 import group10.doodling.util.data.UploadImage;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;

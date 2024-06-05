@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import group10.doodling.controller.dto.request.auth.OauthUserInfoResponseDTO;
-import group10.doodling.repository.UserRepository;
-import group10.doodling.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -33,8 +31,6 @@ public class OAuthManager {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final UserRepository userRepository;
-
     public enum OauthType {
         KAKAO
     }
@@ -46,7 +42,7 @@ public class OAuthManager {
     }
 
     private String createKakaoRedirectURI() {
-        return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+KAKAO_CLIENT_KEY+"&redirect_uri=http://"+HOST_ADDRESS+":8080/api/auth/login/oauth2/callback";
+        return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+KAKAO_CLIENT_KEY+"&redirect_uri=http://"+HOST_ADDRESS+":8080/";
     }
 
     public String getAccessToken(OauthType oauthType, String code, String redirectURI) throws JsonProcessingException {

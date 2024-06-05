@@ -5,7 +5,6 @@ import group10.doodling.controller.dto.request.note.updateNote.UpdateNoteRequest
 import group10.doodling.controller.dto.response.note.createNote.CreateNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.deleteNote.DeleteNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.readNote.detail.ReadDetailNoteResponseDTO;
-import group10.doodling.controller.dto.response.note.readNote.preview.NotePreviewDataDTO;
 import group10.doodling.controller.dto.response.note.readNote.preview.ReadPreviewNoteResponseDTO;
 import group10.doodling.controller.dto.response.note.updateNote.UpdateNoteResponseDTO;
 import group10.doodling.entity.Note;
