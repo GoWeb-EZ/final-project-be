@@ -91,7 +91,8 @@ public class NoteController {
 
     @GetMapping("/search")
     public ResponseEntity<ReadPreviewNoteResponseDTO> getNotePreviewBySearchTag(@UserId String userId, @RequestParam String tag) {
-
+        ReadPreviewNoteResponseDTO noteFilteredByTag = noteService.getNoteFilteredByTag(userId, tag);
+        return ResponseEntity.ok(noteFilteredByTag);
     }
 }
 
