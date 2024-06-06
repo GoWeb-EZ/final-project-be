@@ -88,5 +88,10 @@ public class NoteController {
         response.setMessage("노트 삭제 성공");
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ReadPreviewNoteResponseDTO> getNotePreviewBySearchTag(@UserId String userId, @RequestParam String tag) {
+
+    }
 }
 
