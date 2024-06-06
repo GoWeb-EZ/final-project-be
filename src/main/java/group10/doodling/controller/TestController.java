@@ -141,4 +141,12 @@ public class TestController {
     public String getCode(@RequestParam String code) {
         return code;
     }
+
+    @GetMapping("/api/test-search-tag")
+    public ResponseEntity<ReadPreviewNoteResponseDTO> testSearchTag(@RequestParam String tag) {
+        User user = userRepository.findByName("정세호").orElseThrow(() -> new RuntimeException("Note not found"));
+
+        ReadPreviewNoteResponseDTO noteFilteredByTag = noteService.getNoteFilteredByTag(user.getId(), tag);
+        return ResponseEntity.ok(noteFilteredByTag);
+    }
 }

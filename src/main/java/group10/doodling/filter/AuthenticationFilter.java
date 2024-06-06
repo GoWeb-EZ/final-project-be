@@ -41,7 +41,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             "/api/test-update-note",
             "/api/test-delete-note",
             "/api/test-preview-note",
-            "/api/test-detail-note"
+            "/api/test-detail-note",
+            "/api/test-search-tag"
     };
     private final TokenManager tokenManager;
     private final ObjectMapper objectMapper = new ObjectMapper();
