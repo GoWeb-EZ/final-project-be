@@ -115,6 +115,14 @@ public class NoteService {
         noteRepository.delete(note);
     }
 
+    public ReadPreviewNoteResponseDTO getNoteFilteredByTag(String userId, String tag) {
+        ReadPreviewNoteResponseDTO previewNoteResponseDTO = getPreviewNote(userId);
+        List<NotePreviewDataDTO> filteredNotes = previewNoteResponseDTO.getResult().stream().filter(note -> note.getTags().contains(tag)).toList();
+        previewNoteResponseDTO.setResult(filteredNotes);
+
+        return previewNoteResponseDTO;
+    }
+
     private Note createBaseNoteEntity(String userId, String title, String content, List<String> tags, String createdAt) {
         return Note.builder()
                 .userId(userId)
