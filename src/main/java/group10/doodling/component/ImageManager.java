@@ -24,6 +24,7 @@ public class ImageManager {
     public List<UploadImage> saveImages(List<MultipartFile> images)
             throws IOException {
         List<UploadImage> storeFileResult = new ArrayList<>();
+
         for (MultipartFile image : images) {
             if (!image.isEmpty()) {
                 storeFileResult.add(saveImage(image));

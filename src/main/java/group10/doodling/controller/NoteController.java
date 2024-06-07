@@ -16,7 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -29,7 +32,7 @@ public class NoteController {
 
     @PostMapping
     public ResponseEntity<CreateNoteResponseDTO> createNote(@UserId String userId,
-                                                            @RequestPart(value = "images", required = false) List<MultipartFile> images,
+                                                            @RequestPart(value = "images", required = false) Optional<List<MultipartFile>> images,
                                                             @RequestPart(value = "CreateNoteRequestDTO", required = false) CreateNoteRequestDTO createNoteRequestDTO) throws IOException {
 
         String title = createNoteRequestDTO.getTitle();
@@ -38,7 +41,7 @@ public class NoteController {
         List<String> imageTexts = createNoteRequestDTO.getImageTexts();
         String createdAt = createNoteRequestDTO.getCreatedAt();
 
-        Note note = noteService.createNote(userId, title, content, tags, createdAt, images, imageTexts);
+        Note note = noteService.createNote(userId, title, content, tags, createdAt, images.orElse(Collections.emptyList()), imageTexts);
 
         userService.saveUserNote(userId, note);
 
@@ -65,10 +68,10 @@ public class NoteController {
     @PatchMapping
     public ResponseEntity<UpdateNoteResponseDTO> updateNote(@UserId String userId,
                                                             @RequestParam String noteId,
-                                                            @RequestPart(value = "images", required = false) List<MultipartFile> images,
+                                                            @RequestPart(value = "images", required = false) Optional<List<MultipartFile>> images,
                                                             @RequestPart(value = "UpdateNoteRequestDTO", required = false) UpdateNoteRequestDTO updateNoteRequestDTO) throws IOException {
 
-        Note note = noteService.updateNote(noteId, images, updateNoteRequestDTO);
+        Note note = noteService.updateNote(noteId, images.orElse(Collections.emptyList()), updateNoteRequestDTO);
         userService.updateUserNoteList(userId, note);
 
         UpdateNoteResponseDTO response = new UpdateNoteResponseDTO();
