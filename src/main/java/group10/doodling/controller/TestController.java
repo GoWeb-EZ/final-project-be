@@ -149,4 +149,10 @@ public class TestController {
         ReadPreviewNoteResponseDTO noteFilteredByTag = noteService.getNoteFilteredByTag(user.getId(), tag);
         return ResponseEntity.ok(noteFilteredByTag);
     }
+
+    @GetMapping
+    public String healthCheck() {
+        return "ok";
+    }
+
 }
